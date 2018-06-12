@@ -27,7 +27,15 @@
                             </div>
                           </li>
                         </ul>
+                        <div class="alert alert-info" v-if="!tasks.length">
+                          You have no tasks
+                        </div>
                       </div>
+                    </div>
+                    <div class="card-footer" v-if="tasks.length">
+                      <span class="badge badge-info">You have {{ tasks.length }} tasks</span>
+                      <span class="badge badge-warning">{{ remainingTasks() }} tasks left</span>
+                      <span class="badge badge-success">{{ completedTasks() }} tasks completed</span>
                     </div>
                 </div>
             </div>
@@ -49,6 +57,12 @@
           }
         },
         methods:{
+          remainingTasks(){
+            return this.tasks.filter(task => {return !task.completed}).length
+          },
+          completedTasks(){
+            return this.tasks.filter(task => {return task.completed}).length
+          },
           fetchData(){
             axios.get('/api/tasks')
                  .then((res) => {

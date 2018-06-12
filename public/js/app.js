@@ -47446,6 +47446,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -47461,6 +47469,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    remainingTasks: function remainingTasks() {
+      return this.tasks.filter(function (task) {
+        return !task.completed;
+      }).length;
+    },
+    completedTasks: function completedTasks() {
+      return this.tasks.filter(function (task) {
+        return task.completed;
+      }).length;
+    },
     fetchData: function fetchData() {
       var _this = this;
 
@@ -47648,9 +47666,33 @@ var render = function() {
                     ]
                   )
                 })
-              )
+              ),
+              _vm._v(" "),
+              !_vm.tasks.length
+                ? _c("div", { staticClass: "alert alert-info" }, [
+                    _vm._v(
+                      "\n                      You have no tasks\n                    "
+                    )
+                  ])
+                : _vm._e()
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _vm.tasks.length
+            ? _c("div", { staticClass: "card-footer" }, [
+                _c("span", { staticClass: "badge badge-info" }, [
+                  _vm._v("You have " + _vm._s(_vm.tasks.length) + " tasks")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "badge badge-warning" }, [
+                  _vm._v(_vm._s(_vm.remainingTasks()) + " tasks left")
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "badge badge-success" }, [
+                  _vm._v(_vm._s(_vm.completedTasks()) + " tasks completed")
+                ])
+              ])
+            : _vm._e()
         ])
       ])
     ])
