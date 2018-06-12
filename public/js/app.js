@@ -47443,6 +47443,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -47482,6 +47485,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         completed: !task.completed
       }).then(function (res) {
         console.log('task updated');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    remove: function remove(task) {
+      var _this3 = this;
+
+      axios.delete('/api/tasks/' + task.id).then(function (res) {
+        var taskIndex = _this3.tasks.indexOf(task);
+        _this3.tasks.splice(taskIndex, 1);
       }).catch(function (err) {
         console.log(err);
       });
@@ -47558,60 +47571,80 @@ var render = function() {
                     "li",
                     { key: task.id, class: { done: task.completed } },
                     [
-                      _c("div", { staticClass: "checkbox" }, [
-                        _c("label", [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: task.completed,
-                                expression: "task.completed"
-                              }
-                            ],
-                            attrs: { type: "checkbox" },
-                            domProps: {
-                              checked: Array.isArray(task.completed)
-                                ? _vm._i(task.completed, null) > -1
-                                : task.completed
-                            },
-                            on: {
-                              click: function($event) {
-                                _vm.done(task)
+                      _c(
+                        "div",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("label", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: task.completed,
+                                  expression: "task.completed"
+                                }
+                              ],
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: Array.isArray(task.completed)
+                                  ? _vm._i(task.completed, null) > -1
+                                  : task.completed
                               },
-                              change: function($event) {
-                                var $$a = task.completed,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      _vm.$set(
-                                        task,
-                                        "completed",
-                                        $$a.concat([$$v])
-                                      )
+                              on: {
+                                click: function($event) {
+                                  _vm.done(task)
+                                },
+                                change: function($event) {
+                                  var $$a = task.completed,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          task,
+                                          "completed",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          task,
+                                          "completed",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
                                   } else {
-                                    $$i > -1 &&
-                                      _vm.$set(
-                                        task,
-                                        "completed",
-                                        $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1))
-                                      )
+                                    _vm.$set(task, "completed", $$c)
                                   }
-                                } else {
-                                  _vm.$set(task, "completed", $$c)
                                 }
                               }
-                            }
-                          }),
-                          _vm._v(" " + _vm._s(task.name))
-                        ])
-                      ])
+                            }),
+                            _vm._v(" " + _vm._s(task.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "pull-right" }, [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    _vm.remove(task)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-remove" })]
+                            )
+                          ])
+                        ]
+                      )
                     ]
                   )
                 })

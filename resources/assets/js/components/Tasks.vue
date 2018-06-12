@@ -19,8 +19,11 @@
                       <div class="tasks-list">
                         <ul class="list-unstyled">
                           <li v-for="task in tasks" :key="task.id" :class="{done: task.completed}">
-                            <div class="checkbox">
+                            <div class="custom-control custom-checkbox">
                               <label><input type="checkbox" v-model="task.completed" @click="done(task)"> {{ task.name }}</label>
+                              <div class="pull-right">
+                                <a href="#" @click.prevent="remove(task)"><i class="fa fa-remove"></i></a>
+                              </div>
                             </div>
                           </li>
                         </ul>
@@ -71,6 +74,16 @@
             })
             .then((res) =>{
               console.log('task updated')
+            })
+            .catch((err) =>{
+              console.log(err);
+            })
+          },
+          remove(task){
+            axios.delete(`/api/tasks/${task.id}`)
+            .then((res) =>{
+              const taskIndex = this.tasks.indexOf(task)
+              this.tasks.splice(taskIndex, 1)
             })
             .catch((err) =>{
               console.log(err);
