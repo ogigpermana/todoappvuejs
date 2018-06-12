@@ -18,9 +18,9 @@
                       </div>
                       <div class="tasks-list">
                         <ul class="list-unstyled">
-                          <li v-for="task in tasks" :key="task.id">
+                          <li v-for="task in tasks" :key="task.id" :class="{done: task.completed}">
                             <div class="checkbox">
-                              <label><input type="checkbox"> {{ task.name }}</label>
+                              <label><input type="checkbox" v-model="task.completed" @click="done(task)"> {{ task.name }}</label>
                             </div>
                           </li>
                         </ul>
@@ -64,6 +64,17 @@
                  .catch((err) => {
                    console.log(err);
                  })
+          },
+          done(task){
+            axios.put(`/api/tasks/${task.id}`, {
+              completed: !task.completed
+            })
+            .then((res) =>{
+              console.log('task updated')
+            })
+            .catch((err) =>{
+              console.log(err);
+            })
           }
         }
     }
@@ -71,5 +82,8 @@
 <style media="screen">
   body, .tasks-list {
     padding-top: 20px
+  }
+  .done label{
+    text-decoration: line-through;
   }
 </style>
